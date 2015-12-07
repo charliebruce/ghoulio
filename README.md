@@ -19,7 +19,7 @@ Opens `URL` and run `JAVASCRIPT` in the page.
 e.g.
 
 ```shell
-# Print search results to
+# Print Google search results
 $ docker run chetbox/ghoulio https://www.google.com/search?q=boo "
 > Array.prototype.slice.call(document.querySelectorAll('h3.r'))
 > .forEach(function(a) {
