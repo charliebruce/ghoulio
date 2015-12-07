@@ -13,7 +13,7 @@ Opens `URL` and run `JAVASCRIPT` in the page.
 
 `JAVASCRIPT` may make use of the following global functions:
 
-- `close()` - Stop the process. `J` script should usually contain a call to `close()` to stop the process.
+- `close()` - Stop the process. `JAVASCRIPT` script should usually contain a call to `close()` to stop the process.
 - `fail(error)` - Print out the error and stop the process.
 
 e.g.
