@@ -32,7 +32,7 @@ page
       console.log('*** EXIT SUCCESS ***');
     }
     function fail(e) {
-      console.log(e.toString());
+      if (e) console.log(e.toString());
       console.log('*** EXIT FAILURE ***');
     }
     try {
