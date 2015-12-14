@@ -1,4 +1,4 @@
-FROM cmfatih/slimerjs
+FROM chetbox/slimerjs
 MAINTAINER chetbox
 
 ADD ./ghoulio.js /app/ghoulio.js
