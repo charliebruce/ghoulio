@@ -1,4 +1,4 @@
-FROM chetbox/slimerjs
+FROM chetbox/slimerjs:1.1.1
 MAINTAINER chetbox
 
 ADD ./ghoulio.js /app/ghoulio.js
