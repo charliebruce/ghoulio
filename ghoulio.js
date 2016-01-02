@@ -1,6 +1,6 @@
 var url = phantom.args[0];
 var callback_url = phantom.args[1];
-var script = phantom.args.slice(2).join(' ');
+var script = phantom.args[2];
 
 if (!url || !script) {
   console.log('ghoulio v2.1');
