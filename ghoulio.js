@@ -18,6 +18,7 @@ var page = webpage.create();
 function callback(message, _callback) {
   if (!callback_url) {
     console.warn('No callback URL specified');
+    if (_callback) _callback('no callback URL');
     return;
   }
   var message_with_url = { url: url };
