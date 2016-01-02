@@ -17,16 +17,17 @@ Opens `URL` and run `JAVASCRIPT` in the page. Makes a GET request to CALLBACK_UR
 - `reject(ERROR_INFO)` - Print out the error and stop the process. Results in a callback with: `{"success" false, "error": ERROR_INFO}`
 - `callback(MESSAGE)` - Fire a callback with: `{"message": MESSAGE}`.
 
-e.g.
+## Example
+
+The following search for "boo" on Google and sends the results to RequestBin. You can see the results [here](http://requestb.in/wfyqwtwf).
 
 ```shell
 # Print Google search results
-$ docker run chetbox/ghoulio https://www.google.com/search?q=boo "
-> Array.prototype.slice.call(document.querySelectorAll('h3.r'))
-> .forEach(function(a) {
->   console.log(a.textContent);
-> });
-> resolve();"
+$ docker run chetbox/ghoulio https://www.google.com/search?q=boo http://requestb.in/wfyqwtwf "
+> resolve(Array.prototype.slice.call(document.querySelectorAll('h3.r'))
+> .map(function(a) {
+>   return a.textContent;
+> }));"
 ```
 
 Any execution errors will cause the process to end. Use `try ... catch` to prevent this.
