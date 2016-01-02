@@ -32,19 +32,19 @@ function callback(message, _callback) {
 page.onConsoleMessage = function(msg) {
   if (msg.startsWith('*** EXIT SUCCESS ***')) {
     var data = JSON.parse(msg.substring(20));
-    console.log(data);
+    console.log('Success: ' + data);
     callback({success: true, data: data, url: page.url}, function() {
       phantom.exit(0);
     });
   } else if (msg.startsWith('*** EXIT FAILURE ***')) {
     var error = JSON.parse(msg.substring(20));
-    console.error(error);
+    console.error('Error: ' + error);
     callback({success: false, error: error, url: page.url}, function() {
       phantom.exit(1);
     });
   } else if (msg.startsWith('*** MESSAGE ***')) {
     var message = JSON.parse(msg.substring(15));
-    console.log(message);
+    console.log('Callback: ' + message);
     callback({message: message, url: page.url});
   } else {
     console.log(msg);
