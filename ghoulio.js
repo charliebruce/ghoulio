@@ -60,13 +60,13 @@ page
       return $.post(callback_url, {data: JSON.stringify(data)});
     }
     function resolve(data) {
-      console.log('*** EXIT SUCCESS ***' + JSON.stringify(data));
+      console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
     }
     function reject(e) {
-      console.log('*** EXIT FAILURE ***' + JSON.stringify(e));
+      console.log('*** EXIT FAILURE ***' + JSON.stringify(e || null));
     }
     function callback(message) {
-      console.log('*** MESSAGE ***' + JSON.stringify(message));
+      console.log('*** MESSAGE ***' + JSON.stringify(message || null));
     }
     try {
       eval(script);
