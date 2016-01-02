@@ -23,11 +23,11 @@ The following search for "boo" on Google and sends the results to RequestBin. Yo
 
 ```shell
 # Print Google search results
-$ docker run chetbox/ghoulio https://www.google.com/search?q=boo http://requestb.in/wfyqwtwf "
-> resolve(Array.prototype.slice.call(document.querySelectorAll('h3.r'))
-> .map(function(a) {
->   return a.textContent;
-> }));"
+docker run chetbox/ghoulio https://www.google.com/search?q=boo http://requestb.in/wfyqwtwf "
+resolve(Array.prototype.slice.call(document.querySelectorAll('h3.r'))
+.map(function(a) {
+ return a.textContent;
+}));"
 ```
 
 Any execution errors will cause the process to end. Use `try ... catch` to prevent this.
