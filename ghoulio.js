@@ -40,6 +40,10 @@ page.onConsoleMessage = function(msg) {
     callback({success: false, error: error}, function() {
       phantom.exit(1);
     });
+  } else if (msg.startsWith('*** MESSAGE ***')) {
+    var message = JSON.parse(msg.substring(15));
+    console.log(message);
+    callback({message: message});
   } else {
     console.log(msg);
   }
@@ -58,6 +62,9 @@ page
     }
     function reject(e) {
       console.log('*** EXIT FAILURE ***' + JSON.stringify(e));
+    }
+    function callback(message) {
+      console.log('*** MESSAGE ***' + JSON.stringify(message));
     }
     try {
       eval(script);

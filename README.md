@@ -13,8 +13,9 @@ Opens `URL` and run `JAVASCRIPT` in the page. Makes a GET request to CALLBACK_UR
 
 `JAVASCRIPT` may make use of the following global functions:
 
-- `resolve(data)` - Stop the process. `JAVASCRIPT` script should usually contain a call to `close()` to stop the process. Results in a callback with: `{"success": true, data: DATA}`
-- `reject(error)` - Print out the error and stop the process. Results in a callback with: `{"success" false, "error": ERROR_INFO}`
+- `resolve(DATA)` - Stop the process. `JAVASCRIPT` script should usually contain a call to `close()` to stop the process. Results in a callback with: `{"success": true, data: DATA}`
+- `reject(ERROR_INFO)` - Print out the error and stop the process. Results in a callback with: `{"success" false, "error": ERROR_INFO}`
+- `callback(MESSAGE)` - Fire a callback with: `{"message": MESSAGE}`.
 
 e.g.
 
