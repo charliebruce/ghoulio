@@ -6,15 +6,15 @@ Uses Gecko-based [SlimerJS](https://slimerjs.org/) under the hood.
 ## Usage
 
 ```shell
-$ docker run chetbox/ghoulio URL JAVASCRIPT
+$ docker run chetbox/ghoulio URL CALLBACK_URL JAVASCRIPT
 ```
 
-Opens `URL` and run `JAVASCRIPT` in the page.
+Opens `URL` and run `JAVASCRIPT` in the page. Makes a GET request to CALLBACK_URL with the result as the `response` query parameter.
 
 `JAVASCRIPT` may make use of the following global functions:
 
-- `close()` - Stop the process. `JAVASCRIPT` script should usually contain a call to `close()` to stop the process.
-- `fail(error)` - Print out the error and stop the process.
+- `resolve(data)` - Stop the process. `JAVASCRIPT` script should usually contain a call to `close()` to stop the process. Results in a callback with: `{"success": true, data: DATA}`
+- `reject(error)` - Print out the error and stop the process. Results in a callback with: `{"success" false, "error": ERROR_INFO}`
 
 e.g.
 
@@ -25,7 +25,7 @@ $ docker run chetbox/ghoulio https://www.google.com/search?q=boo "
 > .forEach(function(a) {
 >   console.log(a.textContent);
 > });
-> close();"
+> resolve();"
 ```
 
 Any execution errors will cause the process to end. Use `try ... catch` to prevent this.
