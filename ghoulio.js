@@ -20,6 +20,7 @@ function callback(message, _callback) {
     console.warn('No callback URL specified');
     return;
   }
+  var message_with_url = { url: url };
   var page = webpage.create();
   page.open(callback_url + '?response=' + JSON.stringify(message), function(status) {
     if (status !== 'success') console.log(status);
@@ -31,19 +32,19 @@ page.onConsoleMessage = function(msg) {
   if (msg.startsWith('*** EXIT SUCCESS ***')) {
     var data = JSON.parse(msg.substring(20));
     console.log(data);
-    callback({success: true, data: data}, function() {
+    callback({success: true, data: data, url: page.url}, function() {
       phantom.exit(0);
     });
   } else if (msg.startsWith('*** EXIT FAILURE ***')) {
     var error = JSON.parse(msg.substring(20));
     console.error(error);
-    callback({success: false, error: error}, function() {
+    callback({success: false, error: error, url: page.url}, function() {
       phantom.exit(1);
     });
   } else if (msg.startsWith('*** MESSAGE ***')) {
     var message = JSON.parse(msg.substring(15));
     console.log(message);
-    callback({message: message});
+    callback({message: message, url: page.url});
   } else {
     console.log(msg);
   }
