@@ -23,7 +23,7 @@ function callback(message, _callback) {
   }
   var message_with_url = { url: url };
   var page = webpage.create();
-  page.open(callback_url + '?response=' + JSON.stringify(message), function(status) {
+  page.open(callback_url + '?response=' + encodeURIComponent(JSON.stringify(message)), function(status) {
     if (status !== 'success') console.log(status);
     if (_callback) _callback(status);
   });
