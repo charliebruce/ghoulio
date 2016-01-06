@@ -90,6 +90,9 @@ page
       console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
     }
     function reject(e) {
+      if (typeof(e) !== 'object') {
+        e = new Error(e);
+      }
       console.log('*** EXIT FAILURE ***' + JSON.stringify(e || {}, ['message', 'stack']));
     }
     function callback(message) {
