@@ -84,9 +84,6 @@ page
   page.viewportSize = { width: 680, height: 680 };
   page.evaluate(function(script) {
     try {
-      function callback(data) {
-        return $.post(callback_url, {data: JSON.stringify(data)});
-      }
       function resolve(data) {
         console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
       }
