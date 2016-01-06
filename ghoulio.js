@@ -3,7 +3,7 @@ var callback_url = phantom.args[1];
 var script = phantom.args[2];
 
 if (!url || !script) {
-  console.log('ghoulio v2.1');
+  console.log('ghoulio v2.2');
   console.log('');
   console.log('Usage: ');
   console.log('  ghoulio URL CALLBACK_URL SCRIPT');
