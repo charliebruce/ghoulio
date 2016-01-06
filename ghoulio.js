@@ -18,13 +18,13 @@ var page = webpage.create();
 function callback(message, _callback) {
   if (!callback_url) {
     console.warn('No callback URL specified');
-    if (_callback) _callback('no callback URL');
+    if (_callback) _callback(null);
     return;
   }
   var message_with_url = { url: url };
-  var page = webpage.create();
-  page.open(callback_url + '?response=' + encodeURIComponent(JSON.stringify(message)), function(status) {
-    if (status !== 'success') console.log(status);
+  var callback_page = webpage.create();
+  callback_page.open(callback_url + '?response=' + encodeURIComponent(JSON.stringify(message)), function(status) {
+    if (status !== 'success') console.error(status);
     if (_callback) _callback(status);
   });
 }
@@ -69,7 +69,7 @@ page.onConsoleMessage = function(msg) {
 };
 
 page.onResourceReceived = function(res) {
-  if (res.stage === 'end' && res.status !== 200) {
+  if (res.stage === 'end' && res.status >= 400) {
     handle_error('HTTP Error ' + res.status, res.statusText);
   }
 };
