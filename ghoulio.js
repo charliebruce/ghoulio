@@ -83,16 +83,16 @@ page
   }
   page.viewportSize = { width: 680, height: 680 };
   page.evaluate(function(script) {
+    function resolve(data) {
+      console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
+    }
+    function reject(e) {
+      console.log('*** EXIT FAILURE ***' + JSON.stringify(e ? e.toString() : null));
+    }
+    function callback(message) {
+      console.log('*** MESSAGE ***' + JSON.stringify(message || null));
+    }
     try {
-      function resolve(data) {
-        console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
-      }
-      function reject(e) {
-        console.log('*** EXIT FAILURE ***' + JSON.stringify(e ? e.toString() : null));
-      }
-      function callback(message) {
-        console.log('*** MESSAGE ***' + JSON.stringify(message || null));
-      }
       eval(script);
     } catch(e) {
       reject(e);
