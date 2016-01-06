@@ -90,7 +90,7 @@ page
       console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
     }
     function reject(e) {
-      console.log('*** EXIT FAILURE ***' + JSON.stringify(e || { message: 'Unknown error'}, ['message', 'stack']));
+      console.log('*** EXIT FAILURE ***' + JSON.stringify(e || {}, ['message', 'stack']));
     }
     function callback(message) {
       console.log('*** MESSAGE ***' + JSON.stringify(message || null));
