@@ -59,7 +59,7 @@ page.onConsoleMessage = function(msg) {
     handle_success(data);
   } else if (msg.startsWith('*** EXIT FAILURE ***')) {
     var error = JSON.parse(msg.substring(20));
-    handle_error(error.message, error.stack);
+    handle_error(error);
   } else if (msg.startsWith('*** MESSAGE ***')) {
     var message = JSON.parse(msg.substring(15));
     handle_message(message);
@@ -83,22 +83,19 @@ page
   }
   page.viewportSize = { width: 680, height: 680 };
   page.evaluate(function(script) {
-    function callback(data) {
-      return $.post(callback_url, {data: JSON.stringify(data)});
-    }
-    function resolve(data) {
-      console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
-    }
-    function reject(e) {
-      if (typeof(e) !== 'object') {
-        e = new Error(e);
-      }
-      console.log('*** EXIT FAILURE ***' + JSON.stringify(e || {}, ['message', 'stack']));
-    }
-    function callback(message) {
-      console.log('*** MESSAGE ***' + JSON.stringify(message || null));
-    }
     try {
+      function callback(data) {
+        return $.post(callback_url, {data: JSON.stringify(data)});
+      }
+      function resolve(data) {
+        console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
+      }
+      function reject(e) {
+        console.log('*** EXIT FAILURE ***' + JSON.stringify(e ? e.toString() : null));
+      }
+      function callback(message) {
+        console.log('*** MESSAGE ***' + JSON.stringify(message || null));
+      }
       eval(script);
     } catch(e) {
       reject(e);
