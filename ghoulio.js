@@ -18,42 +18,69 @@ var page = webpage.create();
 function callback(message, _callback) {
   if (!callback_url) {
     console.warn('No callback URL specified');
-    if (_callback) _callback('no callback URL');
+    if (_callback) _callback(null);
     return;
   }
   var message_with_url = { url: url };
-  var page = webpage.create();
-  page.open(callback_url + '?response=' + encodeURIComponent(JSON.stringify(message)), function(status) {
-    if (status !== 'success') console.log(status);
+  var callback_page = webpage.create();
+  callback_page.open(callback_url + '?response=' + encodeURIComponent(JSON.stringify(message)), function(status) {
+    if (status !== 'success') console.error(status);
     if (_callback) _callback(status);
   });
 }
 
+function handle_success(data) {
+  console.log(JSON.stringify(data));
+  callback({success: true, data: data, url: page.url}, function() {
+    phantom.exit(0);
+  });
+}
+
+function handle_error(message, info) {
+  console.error(message);
+  if (info) console.error(info);
+  callback({success: false, url: url, error: {message: message, info: info}}, function() {
+    phantom.exit(1);
+  });
+}
+
+function handle_message(message) {
+  console.info(JSON.stringify(message));
+  callback({message: message, url: page.url});
+}
+
+phantom.onError = function(msg, trace) {
+  handle_error('SlimerJS error: ' + msg, trace);
+};
+
 page.onConsoleMessage = function(msg) {
   if (msg.startsWith('*** EXIT SUCCESS ***')) {
     var data = JSON.parse(msg.substring(20));
-    console.log('Success: ' + data);
-    callback({success: true, data: data, url: page.url}, function() {
-      phantom.exit(0);
-    });
+    handle_success(data);
   } else if (msg.startsWith('*** EXIT FAILURE ***')) {
     var error = JSON.parse(msg.substring(20));
-    console.error('Error: ' + error);
-    callback({success: false, error: error, url: page.url}, function() {
-      phantom.exit(1);
-    });
+    handle_error(error.message, error.stack);
   } else if (msg.startsWith('*** MESSAGE ***')) {
     var message = JSON.parse(msg.substring(15));
-    console.log('Callback: ' + message);
-    callback({message: message, url: page.url});
+    handle_message(message);
   } else {
     console.log(msg);
   }
 };
 
+page.onResourceReceived = function(res) {
+  if (res.stage === 'end' && res.status >= 400) {
+    handle_error('HTTP Error ' + res.status, res.statusText);
+  }
+};
+
 page
 .open(url)
-.then(function() {
+.then(function(status) {
+  if (status !== 'success') {
+    handle_error('SlimerJS status: ' + status);
+    return;
+  }
   page.viewportSize = { width: 680, height: 680 };
   page.evaluate(function(script) {
     function callback(data) {
@@ -63,7 +90,10 @@ page
       console.log('*** EXIT SUCCESS ***' + JSON.stringify(data || null));
     }
     function reject(e) {
-      console.log('*** EXIT FAILURE ***' + JSON.stringify(e || null));
+      if (typeof(e) !== 'object') {
+        e = new Error(e);
+      }
+      console.log('*** EXIT FAILURE ***' + JSON.stringify(e || {}, ['message', 'stack']));
     }
     function callback(message) {
       console.log('*** MESSAGE ***' + JSON.stringify(message || null));
