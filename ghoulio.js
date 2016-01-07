@@ -23,7 +23,11 @@ function callback(message, _callback) {
   }
   var message_with_url = { url: url };
   var callback_page = webpage.create();
-  callback_page.open(callback_url + '?response=' + encodeURIComponent(JSON.stringify(message)), function(status) {
+  var callback_url_with_response = callback_url +
+                                   (callback_url.indexOf('?') < 0 ? '?' : '&') +
+                                   'response=' +
+                                   encodeURIComponent(JSON.stringify(message));
+  callback_page.open(callback_url_with_response, function(status) {
     if (status !== 'success') console.error(status);
     if (_callback) _callback(status);
   });
