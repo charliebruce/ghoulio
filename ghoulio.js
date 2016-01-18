@@ -41,8 +41,8 @@ function handle_success(data) {
 }
 
 function handle_error(message, info) {
-  console.error(message);
-  if (info) console.error(info);
+  console.error(JSON.stringify(message));
+  if (info) console.error(JSON.stringify(info));
   callback({success: false, url: url, error: {message: message, info: info}}, function() {
     phantom.exit(1);
   });
